@@ -42,6 +42,10 @@ include ../mixins/head.jade
     }
   }
 
+  var capitalize = function (string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
+
 mixin icon(child)
   if(child.type === 'dir')
     if(findPath(child.name))
@@ -122,7 +126,9 @@ html
                 if (version != docsVersion)
                   option(value="#{version}") DC/OS #{version}
 
-            +renderMenu(locals.navs.header)
+            +renderMenu(locals.navs.header).docs-menu
+
+            nav.docs-in-this-post
 
           // Search results
           .docs-layout__docs-content.docs-layout__docs-results(style='display: none;')
@@ -132,7 +138,14 @@ html
             .docs-search.docs-search--mobile
               input(type='search').docs-search__input
             h1.docs-heading!= locals.post_title
-            article!= contents
+
+            .docs-tags
+              if locals.enterprise
+                span.pill DC/OS Enterprise
+              if locals.feature_maturity
+                span.pill!= capitalize(locals.feature_maturity)
+
+            article#docs-content!= contents
 
             .docs-content__footer
               ul.docs-content__footer__actions

@@ -42,6 +42,8 @@ include ../mixins/head.jade
     }
   }
 
+  var docsVersionsReversed = docsVersions.slice().reverse()
+
 mixin icon(child)
   if(child.type === 'dir')
     if(findPath(child.name))
@@ -117,8 +119,9 @@ html
               input(type='search').docs-search__input
 
             select(name="docs-version").docs-version-select.dropdown#docs-version-select Select version
-              option(selected, value="#{docsVersion}") DC/OS #{docsVersion}
-              each version in docsVersions
+              each version in docsVersionsReversed
+                if (version == docsVersion)
+                  option(selected, value="#{version}") DC/OS #{version}
                 if (version != docsVersion)
                   option(value="#{version}") DC/OS #{version}
 
